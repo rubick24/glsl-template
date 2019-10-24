@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+      "sourceMap": true,
+      "strict": true,
+      "lib": [
+        "dom",
+        "es2015"
+      ],
+      "types": [
+        "webpack-env"
+      ]
+  }
+}
