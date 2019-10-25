@@ -1,6 +1,12 @@
 import { GlTF } from '../types/glTF'
 
-export default (gl: WebGL2RenderingContext, json:GlTF, images: HTMLImageElement[], textureIndex: number, index: number) => {
+export default (
+  gl: WebGL2RenderingContext,
+  json: GlTF,
+  images: HTMLImageElement[],
+  textureIndex: number,
+  index: number
+) => {
   if (!json.textures || !json.samplers) {
     throw new Error('glTFLoader: texture or sampler not found')
   }
@@ -23,14 +29,7 @@ export default (gl: WebGL2RenderingContext, json:GlTF, images: HTMLImageElement[
   }
   gl.activeTexture(gl.TEXTURE0 + index)
   gl.bindTexture(gl.TEXTURE_2D, texture)
-  gl.texImage2D(
-    gl.TEXTURE_2D,
-    0,
-    gl.RGBA,
-    gl.RGBA,
-    gl.UNSIGNED_BYTE,
-    images[tJSON.source]
-  )
+  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, images[tJSON.source])
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, sJSON.wrapS)
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, sJSON.wrapT)
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, sJSON.minFilter)
