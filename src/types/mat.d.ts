@@ -12,6 +12,7 @@ type Tuple<ElementT, LengthT extends number, OutputT extends any[] = []> = {
 type Vec2 = Tuple<number, 2>
 type Vec3 = Tuple<number, 3>
 type Vec4 = Tuple<number, 4>
+type Quat = Tuple<number, 4>
 type Mat2 = Tuple<number, 4>
 type Mat3 = Tuple<number, 9>
 type Mat4 = Tuple<number, 16>

@@ -29,6 +29,16 @@ export interface IMesh {
   primitives: IPrimitive[]
 }
 
+export interface INode {
+  name: string
+  children: INode[]
+}
+
+export interface IScene {
+  name: string
+  nodes: INode[]
+}
+
 export const typeSize = {
   SCALAR: 1,
   VEC2: 2,
