@@ -2,14 +2,20 @@ import { GlTF } from '../types/glTF'
 import parseGLB from './parseGLB'
 import getAccessor from './getAccessor'
 import getImages from './getImages'
+import getMeshes from './getMeshes'
 
-interface IGlTFExpose {
-  animations: object[]
-  scene: object
-  scenes: object[]
-  cameras: object[]
-  models: object[]
-}
+import Shader from '../shader'
+import vsSource from './shader/m.vert'
+import fsSource from './shader/m.frag'
+import getMaterials from './getMaterials'
+
+// interface IGlTFExpose {
+//   scene: object
+//   meshes: object[]
+//   animations?: object[]
+//   scenes?: object[]
+//   cameras?: object[]
+// }
 
 const relativeURL = (base: string, target: string) => {
   if (base.lastIndexOf('/') !== -1) {
@@ -48,10 +54,20 @@ const loadGLTF = async (url: string, gl: WebGL2RenderingContext) => {
   }
 
   // get accessors
-  let accessors = getAccessor(json, buffers)
+  const accessors = getAccessor(json, buffers)
 
   // get images
-  let images = getImages(json, buffers)
+  const images = await getImages(json, buffers)
 
   // TODO: getMaterials
+  // use default unlit material now
+  const materials = getMaterials(gl, json, images)
+
+  const shader = new Shader(gl, vsSource, fsSource)
+
+  const meshes = getMeshes(gl, shader, json, accessors, materials)
+  // render(scene)
+  // draw(meshes[0], modelMatrix)
+
+  // animate(animations[0], )
 }

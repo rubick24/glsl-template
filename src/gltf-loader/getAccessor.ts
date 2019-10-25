@@ -1,24 +1,6 @@
 import { GlTF } from '../types/glTF'
+import { IAccessor, typeSize, componentTypedArray } from './interfaces'
 
-const typeSize = {
-  SCALAR: 1,
-  VEC2: 2,
-  VEC3: 3,
-  VEC4: 4,
-  MAT2: 4,
-  MAT3: 9,
-  MAT4: 16
-}
-const componentTypedArray = {
-  [WebGL2RenderingContext.BYTE]: Int8Array,
-  [WebGL2RenderingContext.UNSIGNED_BYTE]: Uint8Array,
-  [WebGL2RenderingContext.SHORT]: Int16Array,
-  [WebGL2RenderingContext.UNSIGNED_SHORT]: Uint16Array,
-  [WebGL2RenderingContext.UNSIGNED_INT]: Uint32Array,
-  [WebGL2RenderingContext.FLOAT]: Float32Array
-}
-
-// json.accessors.map((v, i) => getAccessor(json, buffers, i))
 export default (json: GlTF, buffers: ArrayBuffer[]): IAccessor[] => {
   if (!json.accessors || !json.bufferViews) {
     throw new Error('glTFLoader: no accessors or bufferViews')
@@ -35,6 +17,8 @@ export default (json: GlTF, buffers: ArrayBuffer[]): IAccessor[] => {
     return {
       index: i,
       itemSize,
+      count: accessor.count,
+      componentType: accessor.componentType,
       bufferData: new arrayType(
         buffers[bufferIndex],
         byteOffset, // offset of byte

@@ -13,8 +13,10 @@ const loadShader = (gl: WebGL2RenderingContext, type: number, source: string) =>
   return shader
 }
 
+type uType = 'BOOLEAN' | 'INT' | 'FLOAT' | 'VEC2' | 'VEC3' | 'VEC4' | 'MAT2' | 'MAT3' | 'MAT4'
+
 export default class Shader {
-  private program: WebGLProgram | null = null
+  program: WebGLProgram
 
   constructor(private gl: WebGL2RenderingContext, vsSource: string, fsSource: string) {
     const vertexShader = loadShader(gl, gl.VERTEX_SHADER, vsSource)
@@ -40,10 +42,7 @@ export default class Shader {
   use() {
     this.gl.useProgram(this.program)
   }
-  setUniform(name: string, type: string, value: any) {
-    if (!this.program) {
-      return
-    }
+  setUniform(name: string, type: uType, value: any) {
     const stex = this.gl.getUniformLocation(this.program, name)
     switch (type) {
       case 'BOOLEAN':
