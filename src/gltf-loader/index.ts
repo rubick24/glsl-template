@@ -3,11 +3,8 @@ import parseGLB from './parseGLB'
 import getAccessor from './getAccessor'
 import getImages from './getImages'
 import getMeshes from './getMeshes'
-
-import Shader from '../shader'
-import vsSource from './shader/m.vert'
-import fsSource from './shader/m.frag'
 import getMaterials from './getMaterials'
+import draw from './draw'
 
 // interface IGlTFExpose {
 //   scene: object
@@ -63,11 +60,24 @@ const loadGLTF = async (url: string, gl: WebGL2RenderingContext) => {
   // use default unlit material now
   const materials = getMaterials(gl, json, images)
 
-  const shader = new Shader(gl, vsSource, fsSource)
+  const meshes = getMeshes(gl, json, accessors, materials)
 
-  const meshes = getMeshes(gl, shader, json, accessors, materials)
-  // render(scene)
-  // draw(meshes[0], modelMatrix)
+  return {
+    // scene,
+    // scenes,
+    meshes,
+    // animations,
+    // cameras
+  }
+}
 
-  // animate(animations[0], )
+// render(scene)
+// draw(gl, meshes[0], modelMatrix, viewMatrix, projectionMatrix, cameraPositon)
+// animate(animations[0], )
+
+export {
+  loadGLTF,
+  // render,
+  draw,
+  // animate
 }

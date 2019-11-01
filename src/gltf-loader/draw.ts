@@ -1,4 +1,4 @@
-import { mat4, vec3 } from 'gl-matrix'
+import { mat4 } from 'gl-matrix'
 import { IMesh } from './interfaces'
 import Shader from '../shader'
 
@@ -6,18 +6,18 @@ const temp = mat4.create()
 
 export default (
   gl: WebGL2RenderingContext,
-  shader: Shader,
   mesh: IMesh,
-  modelMatrix: mat4,
-  viewMatrix: mat4,
-  projectionMatrix: mat4,
-  cameraPosition: vec3
+  modelMatrix: Float32Array,
+  viewMatrix: Float32Array,
+  projectionMatrix: Float32Array,
+  cameraPosition: Float32Array
 ) => {
   mat4.multiply(temp, viewMatrix, modelMatrix)
   const mvpMatrix = mat4.multiply(mat4.create(), projectionMatrix, temp)
   mat4.invert(temp, modelMatrix)
   const normalMatrix = mat4.transpose(mat4.create(), temp)
   mesh.primitives.forEach((primitive, i) => {
+    const shader = primitive.material.shader
     shader.use()
     primitive.material.textures.forEach((texture, i) => {
       gl.activeTexture(gl.TEXTURE0 + i)

@@ -18,14 +18,14 @@ export default (json: GlTF, meshes: IMesh[]) => {
       const node = nodes[v]
       let matrix
       if (node.matrix) {
-        matrix = new Float32Array(node.matrix) as mat4 // TODO: to row major order?
+        matrix = new Float32Array(node.matrix) // TODO: to row major order?
       } else {
         matrix = mat4.create()
         if (node.translation) {
           mat4.translate(matrix, matrix, node.translation)
         }
         if (node.rotation) {
-          mat4.fromQuat(tmp, quat.fromValues.apply(quat, node.rotation as Quat))
+          mat4.fromQuat(tmp, quat.fromValues.apply(quat, node.rotation))
           mat4.mul(matrix, matrix, tmp)
         }
         if (node.scale) {

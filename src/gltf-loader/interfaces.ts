@@ -1,3 +1,5 @@
+import Shader from '../shader'
+
 export interface IAccessor {
   index: number
   itemSize: number
@@ -7,6 +9,7 @@ export interface IAccessor {
 }
 
 export interface IMaterial {
+  shader: Shader
   uniforms: {
     name: string
     type: 'BOOLEAN' | 'INT' | 'FLOAT' | 'VEC2' | 'VEC3' | 'VEC4' | 'MAT2' | 'MAT3' | 'MAT4'

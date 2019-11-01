@@ -19,3 +19,16 @@ type Mat4 = Tuple<number, 16>
 
 type GLType = 'SCALAR' | 'VEC2' | 'VEC3' | 'VEC4' | 'MAT2' | 'MAT3' | 'MAT4'
 type GLArrayType = Int8Array | Uint8Array | Int16Array | Uint16Array | Uint32Array | Float32Array
+
+declare module 'gl-matrix' {
+  const value: any
+  export default value
+  export const glMatrix: any
+  export const vec2: any
+  export const vec3: any
+  export const vec4: any
+  export const mat2: any
+  export const mat3: any
+  export const mat4: any
+  export const quat: any
+}
