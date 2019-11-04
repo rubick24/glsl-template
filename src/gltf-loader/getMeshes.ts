@@ -12,8 +12,8 @@ export default (
     throw new Error('glTFLoader: no meshes found')
   }
 
-  return json.meshes.map(mesh => {
-    const primitives = mesh.primitives.map(primitive => {
+  return json.meshes.map((mesh): IMesh => {
+    const primitives = mesh.primitives.map((primitive): IPrimitive => {
       // if () {
       //   // TODO: support no indices primitive
       //   throw new Error('glTFLoader: primitive.indices is undefined')
@@ -54,8 +54,8 @@ export default (
         vao,
         material,
         mode: primitive.mode === undefined ? 4 : primitive.mode
-      } as IPrimitive
+      }
     })
-    return { primitives } as IMesh
+    return { primitives }
   })
 }

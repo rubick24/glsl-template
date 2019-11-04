@@ -9,12 +9,12 @@ export default (json: GlTF, meshes: IMesh[]) => {
     return []
   }
 
-  const getNodes = (nodeIndexes: number[] | undefined): INode[] => {
+  const getNodes = (nodeIndexes: number[]): INode[] => {
     if (!nodeIndexes || !json.nodes) {
       return []
     }
     const nodes = json.nodes
-    return nodeIndexes.map(v => {
+    return nodeIndexes.map((v):INode => {
       const node = nodes[v]
       let matrix
       if (node.matrix) {
@@ -33,18 +33,19 @@ export default (json: GlTF, meshes: IMesh[]) => {
         }
       }
       return {
-        name: node.name,
+        name: node.name || '',
         matrix,
         mesh: node.mesh ? meshes[node.mesh] : undefined,
-        children: getNodes(node.children)
-      } as INode
+        children: node.children ? getNodes(node.children) : undefined,
+        tempMatrix: mat4.create()
+      }
     })
   }
 
-  return json.scenes.map(scene => {
+  return json.scenes.map((scene):IScene => {
     return {
-      name: scene.name,
-      nodes: getNodes(scene.nodes)
-    } as IScene
+      name: scene.name || '',
+      nodes: scene.nodes ? getNodes(scene.nodes) : undefined
+    }
   })
 }

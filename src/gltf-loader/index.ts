@@ -5,7 +5,7 @@ import getImages from './getImages'
 import getMeshes from './getMeshes'
 import getMaterials from './getMaterials'
 import draw from './draw'
-
+import render from './render'
 // interface IGlTFExpose {
 //   scene: object
 //   meshes: object[]
@@ -77,7 +77,7 @@ const loadGLTF = async (url: string, gl: WebGL2RenderingContext) => {
 
 export {
   loadGLTF,
-  // render,
+  render,
   draw,
   // animate
 }

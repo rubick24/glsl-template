@@ -8,11 +8,13 @@ export interface IAccessor {
   bufferData: GLArrayType
 }
 
+export type UniformType = 'BOOLEAN' | 'INT' | 'FLOAT' | 'VEC2' | 'VEC3' | 'VEC4' | 'MAT2' | 'MAT3' | 'MAT4'
+
 export interface IMaterial {
   shader: Shader
   uniforms: {
     name: string
-    type: 'BOOLEAN' | 'INT' | 'FLOAT' | 'VEC2' | 'VEC3' | 'VEC4' | 'MAT2' | 'MAT3' | 'MAT4'
+    type: UniformType
     value: any
   }[]
   textures: WebGLTexture[]
@@ -34,12 +36,15 @@ export interface IMesh {
 
 export interface INode {
   name: string
-  children: INode[]
+  matrix: Float32Array
+  mesh?: IMesh
+  children?: INode[]
+  tempMatrix: Float32Array
 }
 
 export interface IScene {
   name: string
-  nodes: INode[]
+  nodes?: INode[]
 }
 
 export const typeSize = {

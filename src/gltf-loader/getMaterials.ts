@@ -1,5 +1,5 @@
 import { GlTF } from '../types/glTF'
-import { IMaterial } from './interfaces'
+import { IMaterial, UniformType } from './interfaces'
 import getTextures from './getTextures'
 import Shader from '../shader'
 import vsSource from './shader/m.vert'
@@ -15,7 +15,7 @@ export default (gl: WebGL2RenderingContext, json: GlTF, images: HTMLImageElement
     return []
   }
 
-  return json.materials.map(material => {
+  return json.materials.map((material): IMaterial => {
     const uniforms = []
     const textureIndexes = []
 
@@ -30,15 +30,15 @@ export default (gl: WebGL2RenderingContext, json: GlTF, images: HTMLImageElement
     const mr = material.pbrMetallicRoughness
     uniforms.push({
       name: 'u_BaseColorFactor',
-      type: 'VEC4',
-      value: mr.baseColorFactor || [0.5, 0.5, 0.5]
+      type: 'VEC4' as UniformType,
+      value: new Float32Array(mr.baseColorFactor || [0.5, 0.5, 0.5])
     })
 
     if (mr.baseColorTexture) {
       textureIndexes.push(mr.baseColorTexture)
       uniforms.push({
         name: 'u_BaseColorSampler',
-        type: 'INT',
+        type: 'INT' as UniformType,
         value: textureIndexes.length - 1
       })
     }
@@ -48,6 +48,6 @@ export default (gl: WebGL2RenderingContext, json: GlTF, images: HTMLImageElement
       shader,
       uniforms,
       textures
-    } as IMaterial
+    }
   })
 }
