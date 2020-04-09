@@ -8,6 +8,6 @@ uniform vec2 resolution;
 out vec2 fragCoord;
 
 void main() {
-  fragCoord = resolution * (position + 1.) / 2.;
-  gl_Position = vec4(position, 0, 1);
+    fragCoord = resolution * (position + 1.) / 2.;
+    gl_Position = vec4(position, 0, 1);
 }

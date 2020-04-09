@@ -3,8 +3,8 @@ import DesktopInput from './input/DesktopInput'
 import TouchInput from './input/TouchInput'
 import { vec3, mat4 } from 'gl-matrix'
 import Shader from './shader'
-import vsSource from './main.vert'
-import fsSource from './main.frag'
+import vsSource from './shader/main.vert'
+import fsSource from './shader/main.frag'
 
 // const formatMat4 = (a: Float32Array) => {
 //   return new Array(4).fill(1).reduce((prev, v, i) => {
