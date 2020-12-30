@@ -46,7 +46,7 @@ const handleGlobalClick = (e: MouseEvent) => {
 window.addEventListener('click', handleGlobalClick)
 
 // const projectionMatrix = camera.getProjectionMatrix(gl.canvas.width / gl.canvas.height, 0.1, 1000)
-shader.setUniform('fovy', 'FLOAT', Math.PI/4)
+shader.setUniform('fovy', 'FLOAT', Math.PI / 4)
 
 const viewMatrixInverse = mat4.create()
 ;(async () => {
@@ -77,10 +77,13 @@ const viewMatrixInverse = mat4.create()
     camera.processTouchInput(ti)
     shader.setUniform('time', 'FLOAT', time)
     shader.setUniform('cameraPosition', 'VEC3', camera.position)
-    shader.setUniform('viewMatrixInverse', 'MAT4', mat4.invert(viewMatrixInverse, camera.viewMatrix))
+    shader.setUniform(
+      'viewMatrixInverse',
+      'MAT4',
+      mat4.invert(viewMatrixInverse, camera.viewMatrix)
+    )
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4)
     requestAnimationFrame(renderLoop)
   }
   requestAnimationFrame(renderLoop)
 })()
-

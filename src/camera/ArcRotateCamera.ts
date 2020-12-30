@@ -22,7 +22,7 @@ export default class ArcRotateCamera {
     public alpha: number,
     public beta: number,
     public radius: number,
-    public fovy = Math.PI/4,
+    public fovy = Math.PI / 4,
     public allowUpsideDown = true
   ) {
     this.updateViewMatrix()
@@ -95,13 +95,7 @@ export default class ArcRotateCamera {
 
   public getProjectionMatrix(aspect: number, near: number, far: number): Float32Array {
     // return mat4.ortho(this._tempMat4, -aspect*3, aspect*3, -3, 3, near, far)
-    return mat4.perspective(
-      this._tempMat4,
-      this.fovy,
-      aspect,
-      near,
-      far
-    )
+    return mat4.perspective(this._tempMat4, this.fovy, aspect, near, far)
   }
 
   public processDesktopInput(di: DesktopInput) {
@@ -126,7 +120,7 @@ export default class ArcRotateCamera {
           deltaY: touch.screenY - lastTouch.screenY
         }
       } else {
-        return { deltaX: 0, deltaY: 0}
+        return { deltaX: 0, deltaY: 0 }
       }
     })
     if (deltas.length === 1) {
