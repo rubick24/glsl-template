@@ -26,7 +26,7 @@ const camera = new ArcRotateCamera(vec3.fromValues(0, 0, 0), Math.PI / 2, Math.P
 const di = new DesktopInput(canvas)
 const ti = new TouchInput(canvas)
 
-const shader = new Shader(gl, vsSource, fsSource)
+const shader = new Shader({ gl, vs: vsSource, fs: fsSource })
 shader.use()
 const quad = [-1.0, 1.0, -1.0, -1.0, 1.0, 1.0, 1.0, -1.0]
 const quadVAO = gl.createVertexArray()
