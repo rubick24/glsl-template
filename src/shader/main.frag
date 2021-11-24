@@ -2,7 +2,7 @@
 precision highp float;
 
 uniform float time;
-uniform float fovy;
+uniform float fovY;
 uniform vec2 resolution;
 uniform vec2 mouse;
 uniform vec3 cameraPosition;
@@ -36,7 +36,7 @@ void main() {
     vec3 target = vec3(0.);
 
     // vec3 cameraFront = normalize(target - rayOrigin);
-    float focalLength = 1./atan(fovy/2.);
+    float focalLength = 1./atan(fovY/2.);
     vec3 rayDirection = normalize((viewMatrixInverse * vec4(p, -focalLength, 0.)).xyz);
 
     vec3 center = vec3(0., 0., 0.);

@@ -46,7 +46,7 @@ const handleGlobalClick = (e: MouseEvent) => {
 window.addEventListener('click', handleGlobalClick)
 
 // const projectionMatrix = camera.getProjectionMatrix(gl.canvas.width / gl.canvas.height, 0.1, 1000)
-shader.setUniform('fovy', 'FLOAT', Math.PI / 4)
+shader.setUniform('fovY', 'FLOAT', Math.PI / 4)
 
 const viewMatrixInverse = mat4.create()
 ;(async () => {
@@ -85,5 +85,5 @@ const viewMatrixInverse = mat4.create()
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4)
     requestAnimationFrame(renderLoop)
   }
-  requestAnimationFrame(renderLoop)
+  // requestAnimationFrame(renderLoop)
 })()
