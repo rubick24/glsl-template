@@ -8,7 +8,7 @@ uniform vec2 mouse;
 uniform vec3 cameraPosition;
 uniform mat4 viewMatrixInverse;
 
-// uniform sampler2D moonTexture;
+uniform sampler2D moonTexture;
 
 in vec2 fragCoord;
 out vec4 fragColor;
@@ -52,7 +52,8 @@ void main() {
 
         vec2 muv = vec2(atan(nor.x, nor.z), acos(nor.y)) * radius;
         muv.x = (muv.x + 1.) /2.;
-        vec4 baseColor = vec4(vec3(0.5), 1.); // texture(moonTexture, muv);
+        // vec4 baseColor = vec4(vec3(0.5), 1.);
+        vec4 baseColor = texture(moonTexture, muv);
         fragColor = vec4(baseColor.rgb * (0.05 + diffuse), 1.);
     }
 }

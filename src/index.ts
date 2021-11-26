@@ -5,6 +5,7 @@ import { vec3, mat4 } from 'gl-matrix'
 import Shader from './shader'
 import vsSource from './shader/main.vert'
 import fsSource from './shader/main.frag'
+import TinySDF from './tinySdf'
 
 // const formatMat4 = (a: Float32Array) => {
 //   return new Array(4).fill(1).reduce((prev, v, i) => {
@@ -12,6 +13,18 @@ import fsSource from './shader/main.frag'
 //     return prev.concat(t.join(', ')).concat('\n')
 //   }, '')
 // }
+
+const tinySdf = new TinySDF({
+  fontSize: 24,
+  fontFamily: 'sans-serif',
+  fontWeight: 'normal',
+  fontStyle: 'normal',
+  buffer: 10,
+  radius: 8,
+  cutoff: 0.25
+})
+const d = tinySdf.draw('abcd')
+console.log(d)
 
 const canvas = document.getElementById('main') as HTMLCanvasElement
 canvas.height = window.innerHeight
@@ -50,19 +63,25 @@ shader.setUniform('fovY', 'FLOAT', Math.PI / 4)
 
 const viewMatrixInverse = mat4.create()
 ;(async () => {
-  // const img = new Image()
-  // img.src = '2k_moon.jpg'
-  // await new Promise(resolve => {
-  //   img.onload = () => resolve(img)
-  // })
-  // const texture = gl.createTexture()
-  // gl.activeTexture(gl.TEXTURE0)
-  // gl.bindTexture(gl.TEXTURE_2D, texture)
-  // gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img)
-  // gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, WebGL2RenderingContext.REPEAT)
-  // gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, WebGL2RenderingContext.REPEAT)
-  // gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, WebGL2RenderingContext.LINEAR)
-  // gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, WebGL2RenderingContext.LINEAR)
+  const texture = gl.createTexture()
+  gl.activeTexture(gl.TEXTURE0)
+  gl.bindTexture(gl.TEXTURE_2D, texture)
+
+  const level = 0
+  const internalFormat = gl.LUMINANCE
+  console.log(d.width, d.height)
+  const width = 50 //d.width
+  const height = 50 //d.height
+  const border = 0
+  const format = gl.LUMINANCE
+  const type = gl.UNSIGNED_BYTE
+  const data = d.data
+  gl.texImage2D(gl.TEXTURE_2D, level, internalFormat, width, height, border, format, type, data)
+
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, WebGL2RenderingContext.CLAMP_TO_EDGE)
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, WebGL2RenderingContext.CLAMP_TO_EDGE)
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, WebGL2RenderingContext.NEAREST)
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, WebGL2RenderingContext.NEAREST)
 
   gl.clearColor(0, 0, 0, 0)
   const renderLoop = (time: number) => {
@@ -75,6 +94,9 @@ const viewMatrixInverse = mat4.create()
     }
     camera.processDesktopInput(di)
     camera.processTouchInput(ti)
+    // gl.activeTexture(gl.TEXTURE0)
+    // gl.bindTexture(gl.TEXTURE_2D, texture)
+    shader.setUniform('moonTexture', 'INT', 0)
     shader.setUniform('time', 'FLOAT', time)
     shader.setUniform('cameraPosition', 'VEC3', camera.position)
     shader.setUniform(
@@ -85,5 +107,5 @@ const viewMatrixInverse = mat4.create()
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4)
     requestAnimationFrame(renderLoop)
   }
-  // requestAnimationFrame(renderLoop)
+  requestAnimationFrame(renderLoop)
 })()
