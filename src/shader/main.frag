@@ -8,52 +8,26 @@ uniform vec2 mouse;
 uniform vec3 cameraPosition;
 uniform mat4 viewMatrixInverse;
 
-uniform sampler2D moonTexture;
+uniform sampler2D textTexture;
 
 in vec2 fragCoord;
 out vec4 fragColor;
 
 const float PI = 3.1415926;
 
-float sphIntersect( vec3 ro, vec3 rd, vec3 center, float radius) {
-    vec3 oc = ro - center;
-    float b = dot( oc, rd );
-    float c = dot( oc, oc ) - radius * radius;
-    float h = b*b - c;
-    if (h < 0.) {
-        return -1.;
-    }
-    return -b - sqrt(h);
-}
+const float edge = 0.5;
+const float delta = 0.005;
+const vec4 u_color = vec4(0., 0., 0., 1.);
 
 void main() {
     vec2 uv = fragCoord / resolution;
-    vec2 p = (-resolution + 2. * fragCoord) / resolution.y; // -1 <> 1 by height
-    fragColor = vec4(vec3(0.), 1.);
+    vec2 p = uv * 2. - 1.;
+    p.x *= resolution.x / resolution.y;
 
-    vec3 rayOrigin = cameraPosition;
-    // per set
-    vec3 target = vec3(0.);
+    float c = texture(textTexture, uv).r;
 
-    // vec3 cameraFront = normalize(target - rayOrigin);
-    float focalLength = 1./atan(fovY/2.);
-    vec3 rayDirection = normalize((viewMatrixInverse * vec4(p, -focalLength, 0.)).xyz);
+    float alpha = smoothstep(edge - delta, edge + delta, c);
+    fragColor = vec4(u_color.rgb, alpha * u_color.a);
 
-    vec3 center = vec3(0., 0., 0.);
-    float radius = 0.3;
-
-    float d = sphIntersect(rayOrigin, rayDirection, center, radius);
-    if (d > 0.) {
-        // normal
-        vec3 ld = normalize(vec3(1.));
-        vec3 nor = normalize(rayOrigin + rayDirection * d - center);
-        fragColor = vec4(clamp(vec3(1.) * dot(ld, nor), 0., 1.), 1.);
-        vec3 diffuse = max(dot(nor, ld), 0.0) * vec3(1.);
-
-        vec2 muv = vec2(atan(nor.x, nor.z), acos(nor.y)) * radius;
-        muv.x = (muv.x + 1.) /2.;
-        // vec4 baseColor = vec4(vec3(0.5), 1.);
-        vec4 baseColor = texture(moonTexture, muv);
-        fragColor = vec4(baseColor.rgb * (0.05 + diffuse), 1.);
-    }
+    // fragColor = vec4(vec3(1. - length(p)), 1.);
 }
