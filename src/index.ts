@@ -49,41 +49,35 @@ window.addEventListener('click', handleGlobalClick)
 shader.setUniform('fovY', 'FLOAT', Math.PI / 4)
 
 const viewMatrixInverse = mat4.create()
-;(async () => {
-  // const img = new Image()
-  // img.src = '2k_moon.jpg'
-  // await new Promise(resolve => {
-  //   img.onload = () => resolve(img)
-  // })
-  // const texture = gl.createTexture()
-  // gl.activeTexture(gl.TEXTURE0)
-  // gl.bindTexture(gl.TEXTURE_2D, texture)
-  // gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img)
-  // gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, WebGL2RenderingContext.REPEAT)
-  // gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, WebGL2RenderingContext.REPEAT)
-  // gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, WebGL2RenderingContext.LINEAR)
-  // gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, WebGL2RenderingContext.LINEAR)
+// const img = new Image()
+// img.src = '2k_moon.jpg'
+// await new Promise(resolve => {
+//   img.onload = () => resolve(img)
+// })
+// const texture = gl.createTexture()
+// gl.activeTexture(gl.TEXTURE0)
+// gl.bindTexture(gl.TEXTURE_2D, texture)
+// gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img)
+// gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, WebGL2RenderingContext.REPEAT)
+// gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, WebGL2RenderingContext.REPEAT)
+// gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, WebGL2RenderingContext.LINEAR)
+// gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, WebGL2RenderingContext.LINEAR)
 
-  gl.clearColor(0, 0, 0, 0)
-  const renderLoop = (time: number) => {
-    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
-    if (window.innerHeight !== canvas.height || window.innerWidth !== canvas.width) {
-      canvas.height = window.innerHeight
-      canvas.width = window.innerWidth
-      shader.setUniform('resolution', 'VEC2', [canvas.clientWidth, canvas.clientHeight])
-      gl.viewport(0, 0, canvas.width, canvas.height)
-    }
-    camera.processDesktopInput(di)
-    camera.processTouchInput(ti)
-    shader.setUniform('time', 'FLOAT', time)
-    shader.setUniform('cameraPosition', 'VEC3', camera.position)
-    shader.setUniform(
-      'viewMatrixInverse',
-      'MAT4',
-      mat4.invert(viewMatrixInverse, camera.viewMatrix)
-    )
-    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4)
-    requestAnimationFrame(renderLoop)
+gl.clearColor(0, 0, 0, 0)
+const renderLoop = (time: number) => {
+  gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
+  if (window.innerHeight !== canvas.height || window.innerWidth !== canvas.width) {
+    canvas.height = window.innerHeight
+    canvas.width = window.innerWidth
+    shader.setUniform('resolution', 'VEC2', [canvas.clientWidth, canvas.clientHeight])
+    gl.viewport(0, 0, canvas.width, canvas.height)
   }
-  // requestAnimationFrame(renderLoop)
-})()
+  camera.processDesktopInput(di)
+  camera.processTouchInput(ti)
+  shader.setUniform('time', 'FLOAT', time)
+  shader.setUniform('cameraPosition', 'VEC3', camera.position)
+  shader.setUniform('viewMatrixInverse', 'MAT4', mat4.invert(viewMatrixInverse, camera.viewMatrix))
+  gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4)
+  requestAnimationFrame(renderLoop)
+}
+// requestAnimationFrame(renderLoop)
